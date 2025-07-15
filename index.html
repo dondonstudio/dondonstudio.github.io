@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隨棠烤 2025</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .img-container {
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 100%;
+            max-height: 500px;
+            width: auto;
+            height: auto;
+        }
+        .input-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .input-container input {
+            width: 100%;
+        }
+        .btn-block {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">隨棠烤 2025</h1>
+        <div class="img-container">
+            <img id="random-image" src="" class="img-fluid" alt="隨機圖片">
+        </div>
+        <div class="input-container">
+            <input type="text" id="name-input" class="form-control mb-3" placeholder="輸入品名">
+            <button id="submit-btn" class="btn btn-primary mb-3 btn-block">送出</button>
+        </div>
+    </div>
+
+    <script>
+        // JSON 數據直接寫在 JavaScript 中
+        const data = {
+            "data": [
+                { "name": "夏至3.0", "aka": ["夏至"], "image_url": "./assets/image_001.jpg" },
+                { "name": "秋收", "aka": [], "image_url": "./assets/image_002.jpg" },
+                { "name": "開到茶蘼", "aka": ["茶蘼"], "image_url": "./assets/image_003.jpg" },
+                { "name": "荔泰苑3.0", "aka": ["荔泰苑"], "image_url": "./assets/image_004.jpg" },
+                { "name": "梅酒豆腐", "aka": [], "image_url": "./assets/image_005.jpg" },
+                { "name": "紅玉栗子蒙布朗", "aka": ["紅茶蒙布朗"], "image_url": "./assets/image_006.jpg" },
+                { "name": "草莓梔子花烏龍short cake", "aka": ["草莓梔子花烏龍"], "image_url": "./assets/image_007.jpg" },
+                { "name": "春綠點心盤", "aka": ["春季點心盤"], "image_url": "./assets/image_008.jpg" },
+                { "name": "花香3.0", "aka": ["花香"], "image_url": "./assets/image_009.jpg" },
+                { "name": "茶桃山", "aka": [], "image_url": "./assets/image_010.jpg" },
+                { "name": "紅心", "aka": [], "image_url": "./assets/image_011.jpg" },
+                { "name": "茉莉茉莉3.0", "aka": ["茉莉茉莉"], "image_url": "./assets/image_012.jpg" },
+                { "name": "正山小種威士忌提拉米蘇", "aka": ["紅茶威士忌提拉米蘇", "正山小種紅茶提拉米蘇", "正山小種威士忌提拉", "紅茶威士忌提拉"], "image_url": "./assets/image_013.png" },
+                { "name": "艷夏玉荔3.0", "aka": ["艷夏玉荔"], "image_url": "./assets/image_014.jpg" }
+            ]
+        };
+
+        let remainingItems = [...data.data]; // 剩餘的未顯示圖片項目列表
+
+        const imageElement = document.getElementById('random-image');
+        const inputElement = document.getElementById('name-input');
+        const submitButton = document.getElementById('submit-btn');
+
+        function generateRandomItem() {
+            if (remainingItems.length === 0) {
+                remainingItems = [...data.data]; // 重新填充圖片項目列表
+            }
+            const randomIndex = Math.floor(Math.random() * remainingItems.length);
+            const randomItem = remainingItems.splice(randomIndex, 1)[0]; // 隨機選取並移除該項目
+            imageElement.src = randomItem.image_url;
+            inputElement.dataset.correctName = randomItem.name;
+            inputElement.dataset.aka = JSON.stringify(randomItem.aka);
+            inputElement.value = ''; // 清空輸入欄位
+        }
+
+        function handleSubmission() {
+            const userInput = inputElement.value.trim();
+            if (userInput === '') {
+                return; // 輸入欄位為空時，不進行任何動作
+            }
+
+            const correctName = inputElement.dataset.correctName;
+            const akaList = JSON.parse(inputElement.dataset.aka);
+
+            if (userInput === correctName) {
+                alert(`正確！\n正確名稱是：${correctName}`);
+            } else if (akaList.includes(userInput)) {
+                alert(`別名也正確！\n正確名稱是：${correctName}`);
+            } else {
+                alert(`錯誤！\n正確名稱是：${correctName}\n你的回答是：${userInput}`);
+            }
+
+            // 清空輸入欄位
+            inputElement.value = '';
+            generateRandomItem();
+        }
+
+        generateRandomItem();
+
+        submitButton.addEventListener('click', handleSubmission);
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
